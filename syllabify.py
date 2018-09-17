@@ -136,6 +136,8 @@ def syllabify(pron, alaska_rule=True):
     '-IH0-N.S-EY1-N'
     >>> pprint(syllabify('IH0 K S K L UW1 D'.split())) # exclude
     '-IH0-K.S K L-UW1-D'
+    >>> pprint(syllabify('S IH1 NG IH0 NG'.split())) # singing
+    'S-IH1-NG.-IH0-NG'
     """
     ## main pass
     mypron = list(pron)
@@ -156,6 +158,8 @@ def syllabify(pron, alaska_rule=True):
             nuclei[i - 1].append(onsets[i].pop(0))
         if len(onsets[i]) > 2 and onsets[i][-1] == 'Y':
             nuclei[i].insert(0, onsets[i].pop())
+        if len(onsets[i]) > 0 and onsets[i][0] == 'NG':
+            coda.append(onsets[i].pop(0))
         if len(onsets[i]) > 1 and alaska_rule and nuclei[i-1][-1] in SLAX \
                                               and onsets[i][0] == 'S':
             coda.append(onsets[i].pop(0))
